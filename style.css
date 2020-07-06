@@ -60,8 +60,10 @@ body{
 .calculator-numbers button{
     border: none; 
     font-size: 1.5em;
-    width: 50px; 
-    height: 50px;
+
+    width: 60px; 
+    height: 60px;
+
     border-radius: 50%;
     background-color: #333333;
     color: white;
