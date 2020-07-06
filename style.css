@@ -1,6 +1,8 @@
+
 body{
     margin: 0; 
     padding: 0;
+    background-color: rgb(22, 21, 21); 
 }
 
 
@@ -10,6 +12,8 @@ body{
     align-items: center;
     height: 100vh;
 }
+
+
 
 
 .calculator-display{
@@ -27,6 +31,9 @@ body{
     font-size: 4em;
     color: white;
 
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
 }
 
 
@@ -36,9 +43,12 @@ body{
    grid-template-columns: repeat(4, 70px);
    width: 290px;
    background: black;
+   border-bottom-left-radius: 10px;
+   border-bottom-right-radius: 10px;
 }
 
-.calculator-numbers div, .calculator-operations div{
+
+.calculator-numbers div{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,7 +57,7 @@ body{
 }
 
 
-.calculator-numbers button, .calculator-operations button{
+.calculator-numbers button{
     border: none; 
     font-size: 1.5em;
     width: 50px; 
