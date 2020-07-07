@@ -6,12 +6,12 @@ body{
     background-color: rgb(22, 21, 21); 
 }
 
-
 .container{
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    min-height: 700px;
 }
 
 
@@ -39,13 +39,11 @@ body{
     height: 100%;
     max-width: 425px;
     max-height: 641px;
-
-
+    min-height: 600px;
 }
 
 
 .calculator-numbers{
-
    display: grid; 
    grid-template-columns: repeat(4, 1fr);
    width: 100%;
@@ -96,6 +94,7 @@ body{
 .operation button{
     background-color: #FF9F0B;
 }
+
 
 
 
