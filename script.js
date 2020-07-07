@@ -18,7 +18,7 @@ var calculatorOperations = document.getElementsByClassName("operation-btn");
 // Sets event listeners for all the number buttons 
 for (var i = 0; i < buttonNumber.length; i++) 
 {
-    buttonNumber[i].addEventListener('click' , numberClicked); // Check false parameter 
+    buttonNumber[i].addEventListener('click' , numberClicked);
 }
 
 
@@ -27,7 +27,7 @@ for (var i = 0; i < buttonNumber.length; i++)
 // Sets event listeners for all the operations 
 for (var i = 0; i < calculatorOperations.length; i++) 
 {
-    calculatorOperations[i].addEventListener('click' , operationClicked, false) ; 
+    calculatorOperations[i].addEventListener('click' , operationClicked) ; 
 }
 
 
@@ -49,6 +49,7 @@ function cleardisplay()
 
  function numberClicked(e)
  {
+     alert("test");
     var numberValue = e.path[0].value;
     appendNumbersToDisplay(numberValue);
  }
