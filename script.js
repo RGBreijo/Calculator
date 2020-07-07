@@ -49,11 +49,13 @@ function cleardisplay()
 
  function numberClicked(e)
  {
-
+    alert("Test123");
     var numberValue = e.path[0].value;
-    alert(numberValue);
-    appendNumbersToDisplay(numberValue);
+
+    // appendNumbersToDisplay(numberValue);
  }
+
+
 
 
 
