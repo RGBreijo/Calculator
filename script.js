@@ -49,8 +49,9 @@ function cleardisplay()
 
  function numberClicked(e)
  {
-     alert("test");
+
     var numberValue = e.path[0].value;
+    alert(numberValue);
     appendNumbersToDisplay(numberValue);
  }
 
