@@ -49,11 +49,12 @@ function cleardisplay()
 
  function numberClicked(e)
  {
+    e = e || window.event;
+    e = e.target || e.srcElement;
 
-    var numberValue = e.path[0].value;
-    alert("Test1234234233");
-
-    // appendNumbersToDisplay(numberValue);
+    if (e.nodeName === 'BUTTON') {
+            appendNumbersToDisplay(e.id);
+    }
  }
 
 
