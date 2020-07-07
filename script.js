@@ -18,8 +18,10 @@ var calculatorOperations = document.getElementsByClassName("operation-btn");
 // Sets event listeners for all the number buttons 
 for (var i = 0; i < buttonNumber.length; i++) 
 {
-    buttonNumber[i].addEventListener('click' , numberClicked, false); // Check false parameter 
+    buttonNumber[i].addEventListener('click' , numberClicked); // Check false parameter 
 }
+
+
 
 
 // Sets event listeners for all the operations 
