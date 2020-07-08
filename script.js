@@ -1,14 +1,17 @@
 /*
-     TODO REMINDER: 
-          Add commas 
-          Only one . is allowed   
-          only one opertion is allowed at a time     
+    * Get extra buttons to work 
+    * Do rules such as pressing operations twice 
+    * Division by zero 
+    * Add commas 
+    * Center text  
 */
 
 
 // Variables to keep track of entered values   
 var operationType = null; 
 var previousNumber = null; 
+var operationSelected = false; 
+var decimalSelected = false; 
 
 
 ///////////////////////////////////////// SETTING EVENT LISTENERS ////////////////////////////////////////////////
@@ -18,6 +21,8 @@ var buttonNumber = document.getElementsByClassName("btn-num"); // See why it doe
 var clearDisplayBtn = document.querySelector("#clear-display").addEventListener('click', cleardisplay);
 
 var calculatorOperations = document.getElementsByClassName("operation-btn");
+
+var convertToNegativeNum = document.querySelector('#convert-negative').addEventListener('click', convertNegative);
 
 
 // Sets event listeners for all the number buttons 
@@ -44,6 +49,7 @@ function cleardisplay()
     var display = document.querySelector("#display-value");
 
     display.textContent = DEFAULT_NUMBER_DISPLAYED;
+    operationSelected = false; 
 }
 
 // resets the values that keep track of the current number and operation type 
@@ -65,8 +71,15 @@ function resetValues()
     e = e || window.event;  
     e = e.target || e.srcElement;
 
-    if (e.nodeName === 'BUTTON') {
-            appendNumbersToDisplay(e.id);
+    console.log("Number: " + e.id + " clicked.")
+
+    if (e.nodeName === 'BUTTON')
+     {
+         if(e.id ===".")
+         {
+            decimalSelected = true; 
+         }
+        appendNumbersToDisplay(e.id);
     }
  }
 
@@ -92,7 +105,7 @@ function appendNumbersToDisplay(number)
 
 
 
-    
+
     if (currentValue == DEFAULT_NUMBER_DISPLAYED )
     {
         display.textContent  = number;
@@ -102,6 +115,7 @@ function appendNumbersToDisplay(number)
         previousNumber = display.textContent; 
         cleardisplay();
         display.textContent = number;
+        operationSelected = false; 
         
 
     }else if(currentValue.length >= MAX_LENGTH)
@@ -120,6 +134,15 @@ function appendNumbersToDisplay(number)
 }
 
 
+
+function convertNegative()
+{
+    var display = document.querySelector("#display-value");
+    var currentValue = display.textContent; 
+    display.textContent = "-" + currentValue; 
+}
+
+
 /*
     Determines the operation clicked. 
     If the equality symbol is selected it displays the results. 
@@ -131,6 +154,7 @@ function operationClicked(e)
 
     if (e.nodeName === 'BUTTON') 
     {
+        operationSelected = true; 
 
         if (e.id === "equality") 
         {
@@ -153,24 +177,43 @@ function calculateResult(prev_num, current_num, operation)
 {
     // Determine which operation to preform 
 
-
     if(operation === "addition")
     {
-        var result = parseInt(prev_num) + parseInt(current_num);
+        if(decimalSelected)
+        {
+            var result = parseFloat(prev_num) + parseFloat(current_num);
+        }else
+        {
+            var result = parseInt(prev_num) + parseInt(current_num);
+        }
         resetValues();
 
         return result;
+
 
     }else if(operation === "subtraction")
     {
-        var result = parseInt(prev_num) - parseInt(current_num);
+        if(decimalSelected)
+        {
+            var result = parseFloat(prev_num) - parseFloat(current_num);
+        }else
+        {
+            var result = parseInt(prev_num) - parseInt(current_num);
+        }
         resetValues();
 
         return result;
 
+
     }else if(operation === "multiplication")
     {
-        var result = parseInt(prev_num) * parseInt(current_num);
+        if(decimalSelected)
+        {
+            var result = parseFloat(prev_num) * parseFloat(current_num);
+        }else
+        {
+            var result = parseInt(prev_num) * parseInt(current_num);
+        }
         resetValues();
 
         return result;
@@ -178,9 +221,16 @@ function calculateResult(prev_num, current_num, operation)
 
     }else if(operation === "division")
     {
-        var result = parseInt(prev_num) / parseInt(current_num); // Do divsion by zero check 
+        if(decimalSelected)
+        {
+            var result = parseFloat(prev_num) / parseFloat(current_num);
+        }else
+        {
+            var result = parseInt(prev_num) / parseInt(current_num);
+        }
         resetValues();
 
         return result;
+
     }
 }
