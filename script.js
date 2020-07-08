@@ -185,12 +185,14 @@ function calculateResult(prev_num, current_num, operation)
     {
         if(decimalSelected)
         {
-            var result = parseFloat(prev_num) + parseFloat(current_num);
+            var result = (parseFloat(prev_num) + parseFloat(current_num));
+    
         }else
         {
             var result = parseInt(prev_num) + parseInt(current_num);
         }
 
+        result = Number(result.toFixed(5)); 
         return result;
 
 
@@ -198,12 +200,14 @@ function calculateResult(prev_num, current_num, operation)
     {
         if(decimalSelected)
         {
+            
             var result = parseFloat(prev_num) - parseFloat(current_num);
         }else
         {
             var result = parseInt(prev_num) - parseInt(current_num);
         }
 
+        result = Number(result.toFixed(5)); 
         return result;
 
 
@@ -217,6 +221,7 @@ function calculateResult(prev_num, current_num, operation)
             var result = parseInt(prev_num) * parseInt(current_num);
         }
 
+        result = Number(result.toFixed(5)); 
         return result;
 
 
@@ -234,6 +239,7 @@ function calculateResult(prev_num, current_num, operation)
         {
             var result = parseInt(prev_num) / parseInt(current_num);
         }
+        result = Number(result.toFixed(5)); 
         return result;
     }
 }
