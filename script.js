@@ -6,13 +6,18 @@
 */
 
 
-var buttonNumber = document.getElementsByClassName("btn-num"); // See why it does not work if change to query 
+// Variables to keep track of entered values   
+var operationType = null; 
+var previousNumber = null; 
+
+
+///////////////////////////////////////// SETTING EVENT LISTENERS ////////////////////////////////////////////////
+
+var buttonNumber = document.getElementsByClassName("btn-num"); // See why it does not work if change to query, collections? 
 
 var clearDisplayBtn = document.querySelector("#clear-display").addEventListener('click', cleardisplay);
 
 var calculatorOperations = document.getElementsByClassName("operation-btn");
-
-
 
 
 // Sets event listeners for all the number buttons 
@@ -22,14 +27,13 @@ for (var i = 0; i < buttonNumber.length; i++)
 }
 
 
-
-
 // Sets event listeners for all the operations 
 for (var i = 0; i < calculatorOperations.length; i++) 
 {
     calculatorOperations[i].addEventListener('click' , operationClicked) ; 
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 // Clears the calculator display 
@@ -38,18 +42,27 @@ function cleardisplay()
     const DEFAULT_NUMBER_DISPLAYED = "0";
 
     var display = document.querySelector("#display-value");
+
     display.textContent = DEFAULT_NUMBER_DISPLAYED;
+}
+
+// resets the values that keep track of the current number and operation type 
+function resetValues()
+{
+    var operationType = null; 
+    var previousNumber = null; 
 }
 
 
  /*
-  Determiens the value of the number button that was clicked and appends it to the display
-  Arg: e  event informaiton when button is clicked  
+  Determiens the number clicked and calls the function to display the number 
+
+  Arg: e  event object provided by the browser when a button is clicked  
  */
 
  function numberClicked(e)
  {
-    e = e || window.event;
+    e = e || window.event;  
     e = e.target || e.srcElement;
 
     if (e.nodeName === 'BUTTON') {
@@ -66,6 +79,7 @@ function cleardisplay()
 
     arg: number  Number user wants to be diplayed 
 */
+
 function appendNumbersToDisplay(number)
 {
     var display = document.querySelector("#display-value");
@@ -74,12 +88,23 @@ function appendNumbersToDisplay(number)
     const MAX_LENGTH  = 11; 
     const DEFAULT_NUMBER_DISPLAYED = "0";
 
+    console.log("type: " + operationType); 
 
+
+
+    
     if (currentValue == DEFAULT_NUMBER_DISPLAYED )
     {
         display.textContent  = number;
 
-    } else if(currentValue.length >= MAX_LENGTH)
+    }else if (operationSelected)
+    {
+        previousNumber = display.textContent; 
+        cleardisplay();
+        display.textContent = number;
+        
+
+    }else if(currentValue.length >= MAX_LENGTH)
     {
         // DO NOTHING, MAX DISPLAYED LENGTH REACHED
 
@@ -95,31 +120,67 @@ function appendNumbersToDisplay(number)
 }
 
 
-
-
 /*
-                    WORK IN PROGRESS    
-
-    Series of function to be called once an operation is selected 
-
-    - Once an operation is clicked keep track of the current number being displayed 
-    - Keep track of the operation to be preformed 
-    - Once a number is selected clear the screen 
-    - Display the user number normally until the = operation is pushed 
-    - Calculate (previousNumber   operation   newNumber) 
-    - Display to screen 
+    Determines the operation clicked. 
+    If the equality symbol is selected it displays the results. 
 */
-
 function operationClicked(e)
 {
-    const DIVISION = "/"; 
-    const MULTIPLICATION = "x";  
-    const ADDITION = "+"; 
-    const SUBTRACTION = "-"; 
+    e = e || window.event;  
+    e = e.target || e.srcElement;
 
-    var operationValue = e.path[0].value;
+    if (e.nodeName === 'BUTTON') 
+    {
 
-    console.log(operationValue);
+        if (e.id === "equality") 
+        {
+            var display = document.querySelector("#display-value");
+            var currentValue = display.textContent; 
+
+            display.textContent = calculateResult(previousNumber, currentValue, operationType);
+         
+        }else
+        {
+            operationSelected = true; 
+            operationType = e.id;
+        }
+    }
 }
 
 
+
+function calculateResult(prev_num, current_num, operation)
+{
+    // Determine which operation to preform 
+
+
+    if(operation === "addition")
+    {
+        var result = parseInt(prev_num) + parseInt(current_num);
+        resetValues();
+
+        return result;
+
+    }else if(operation === "subtraction")
+    {
+        var result = parseInt(prev_num) - parseInt(current_num);
+        resetValues();
+
+        return result;
+
+    }else if(operation === "multiplication")
+    {
+        var result = parseInt(prev_num) * parseInt(current_num);
+        resetValues();
+
+        return result;
+
+
+    }else if(operation === "division")
+    {
+        var result = parseInt(prev_num) / parseInt(current_num); // Do divsion by zero check 
+        resetValues();
+
+        return result;
+    }
+}
