@@ -1,22 +1,17 @@
-/*
-    * Get extra buttons to work 
-    * Do rules such as pressing operations twice 
-    * Division by zero 
-    * Add commas 
-    * Center text  
-*/
-
 
 // Variables to keep track of entered values   
 var operationType = null; 
 var previousNumber = null; 
+
 var operationSelected = false; 
 var decimalSelected = false; 
+var percentageSelected = false;
 
+var display = document.querySelector("#display-value");
 
 ///////////////////////////////////////// SETTING EVENT LISTENERS ////////////////////////////////////////////////
 
-var buttonNumber = document.getElementsByClassName("btn-num"); // See why it does not work if change to query, collections? 
+var buttonNumber = document.getElementsByClassName("btn-num"); 
 
 var clearDisplayBtn = document.querySelector("#clear-display").addEventListener('click', cleardisplay);
 
@@ -24,6 +19,7 @@ var calculatorOperations = document.getElementsByClassName("operation-btn");
 
 var convertToNegativeNum = document.querySelector('#convert-negative').addEventListener('click', convertNegative);
 
+var convertToPercentage = document.querySelector('#percentage').addEventListener('click', convertToPercentage);
 
 // Sets event listeners for all the number buttons 
 for (var i = 0; i < buttonNumber.length; i++) 
@@ -40,25 +36,14 @@ for (var i = 0; i < calculatorOperations.length; i++)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
 // Clears the calculator display 
 function cleardisplay()
 {
     const DEFAULT_NUMBER_DISPLAYED = "0";
 
-    var display = document.querySelector("#display-value");
-
     display.textContent = DEFAULT_NUMBER_DISPLAYED;
     operationSelected = false; 
 }
-
-// resets the values that keep track of the current number and operation type 
-function resetValues()
-{
-    var operationType = null; 
-    var previousNumber = null; 
-}
-
 
  /*
   Determiens the number clicked and calls the function to display the number 
@@ -71,19 +56,27 @@ function resetValues()
     e = e || window.event;  
     e = e.target || e.srcElement;
 
-    console.log("Number: " + e.id + " clicked.")
 
     if (e.nodeName === 'BUTTON')
      {
-         if(e.id ===".")
+         if(e.id === ".")
          {
-            decimalSelected = true; 
+             if(decimalSelected)
+             {
+                // DO NOTHING MULTIPLE DECIMALS SELECTED
+            
+             }else
+             {
+                decimalSelected = true; 
+                appendNumbersToDisplay(e.id);
+             }
+
+         }else
+         {
+            appendNumbersToDisplay(e.id);
          }
-        appendNumbersToDisplay(e.id);
     }
  }
-
-
 
 
 
@@ -92,17 +85,12 @@ function resetValues()
 
     arg: number  Number user wants to be diplayed 
 */
-
 function appendNumbersToDisplay(number)
 {
-    var display = document.querySelector("#display-value");
+
     var currentValue = display.textContent; 
-
-    const MAX_LENGTH  = 11; 
+    const MAX_LENGTH  = 9; 
     const DEFAULT_NUMBER_DISPLAYED = "0";
-
-    console.log("type: " + operationType); 
-
 
 
 
@@ -113,19 +101,16 @@ function appendNumbersToDisplay(number)
     }else if (operationSelected)
     {
         previousNumber = display.textContent; 
+
         cleardisplay();
         display.textContent = number;
         operationSelected = false; 
+        decimalSelected = false; 
         
 
     }else if(currentValue.length >= MAX_LENGTH)
     {
         // DO NOTHING, MAX DISPLAYED LENGTH REACHED
-
-    }else if(currentValue.length % 3 == 0){
-
-            // TODO: FUNCTION TO PLACE COMMA 
-        display.textContent = currentValue + number;
 
     }else
     {
@@ -134,12 +119,27 @@ function appendNumbersToDisplay(number)
 }
 
 
-
+// Converts the user number to a negative number
 function convertNegative()
 {
-    var display = document.querySelector("#display-value");
     var currentValue = display.textContent; 
     display.textContent = "-" + currentValue; 
+}
+
+
+/*
+Converts the user number into a percentage
+Percentage is taken by dividng the value by 100 
+    Example 
+    25%
+    25 ÷ 100 = 0.25.
+    
+*/ 
+function convertToPercentage()
+{
+    var currentValue = display.textContent; 
+    display.textContent = currentValue / 100; 
+    decimalSelected = true; 
 }
 
 
@@ -158,10 +158,9 @@ function operationClicked(e)
 
         if (e.id === "equality") 
         {
-            var display = document.querySelector("#display-value");
             var currentValue = display.textContent; 
-
             display.textContent = calculateResult(previousNumber, currentValue, operationType);
+            decimalSelected = false; 
          
         }else
         {
@@ -172,10 +171,15 @@ function operationClicked(e)
 }
 
 
+/*
+    Calculates the results of the operation 
+    prev_num        First number user typed  
+    current_num     Second number user typed 
+    operation       Operation to be preformed 
+*/
 
 function calculateResult(prev_num, current_num, operation)
 {
-    // Determine which operation to preform 
 
     if(operation === "addition")
     {
@@ -186,7 +190,6 @@ function calculateResult(prev_num, current_num, operation)
         {
             var result = parseInt(prev_num) + parseInt(current_num);
         }
-        resetValues();
 
         return result;
 
@@ -200,7 +203,6 @@ function calculateResult(prev_num, current_num, operation)
         {
             var result = parseInt(prev_num) - parseInt(current_num);
         }
-        resetValues();
 
         return result;
 
@@ -214,13 +216,17 @@ function calculateResult(prev_num, current_num, operation)
         {
             var result = parseInt(prev_num) * parseInt(current_num);
         }
-        resetValues();
 
         return result;
 
 
     }else if(operation === "division")
-    {
+    {   
+        if(current_num === "0") 
+        {
+            return "Error";
+        }
+
         if(decimalSelected)
         {
             var result = parseFloat(prev_num) / parseFloat(current_num);
@@ -228,9 +234,6 @@ function calculateResult(prev_num, current_num, operation)
         {
             var result = parseInt(prev_num) / parseInt(current_num);
         }
-        resetValues();
-
         return result;
-
     }
 }
