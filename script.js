@@ -54,12 +54,12 @@ function cleardisplay()
  function numberClicked(e)
  {
     e = e || window.event;  
-    e = e.target || e.srcElement;
+    let target = e.target || e.srcElement;
 
 
-    if (e.nodeName === 'BUTTON')
+    if (target.nodeName === 'BUTTON')
      {
-         if(e.id === ".")
+         if(target.id === ".")
          {
              if(decimalSelected)
              {
@@ -68,12 +68,12 @@ function cleardisplay()
              }else
              {
                 decimalSelected = true; 
-                appendNumbersToDisplay(e.id);
+                appendNumbersToDisplay(target.id);
              }
 
          }else
          {
-            appendNumbersToDisplay(e.id);
+            appendNumbersToDisplay(target.id);
          }
     }
  }
@@ -150,13 +150,13 @@ function convertToPercentage()
 function operationClicked(e)
 {
     e = e || window.event;  
-    e = e.target || e.srcElement;
+    let target = e.target || e.srcElement;
 
-    if (e.nodeName === 'BUTTON') 
+    if (target.nodeName === 'BUTTON') 
     {
         operationSelected = true; 
 
-        if (e.id === "equality") 
+        if (target.id === "equality") 
         {
             var currentValue = display.textContent; 
             display.textContent = calculateResult(previousNumber, currentValue, operationType);
@@ -165,7 +165,7 @@ function operationClicked(e)
         }else
         {
             operationSelected = true; 
-            operationType = e.id;
+            operationType = target.id;
         }
     }
 }
