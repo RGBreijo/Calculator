@@ -1,11 +1,13 @@
 
 // Variables to keep track of entered values   
-var operationType = null; 
-var previousNumber = null; 
+let operationType = null; 
+let previousNumber = null; 
 
-var operationSelected = false; 
-var decimalSelected = false; 
-var percentageSelected = false;
+let operationSelected = false; 
+let decimalSelected = false; 
+let percentageSelected = false;
+
+// ...etc.
 
 var display = document.querySelector("#display-value");
 
